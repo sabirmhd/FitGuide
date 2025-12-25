@@ -64,16 +64,16 @@ const WeeklyProgress = ({ targetCalories = 2000 }) => {
                     if (day.calories === 0) {
                         barColor = 'bg-slate-100 dark:bg-slate-700/50';
                     } else if (day.calories >= lowerBound && day.calories <= upperBound) {
-                        barColor = 'bg-green-500';
+                        barColor = isToday ? 'bg-green-600' : 'bg-green-500';
                     } else if (day.calories < lowerBound) {
-                        barColor = 'bg-yellow-400';
+                        barColor = isToday ? 'bg-yellow-500' : 'bg-yellow-400';
                     } else {
-                        barColor = 'bg-red-400';
+                        barColor = isToday ? 'bg-red-500' : 'bg-red-400';
                     }
 
                     // Highlight today
                     if (isToday && day.calories > 0) {
-                        barColor = barColor.replace('400', '500').replace('500', '600') + ' ring-2 ring-offset-2 ring-slate-200 dark:ring-slate-700 dark:ring-offset-slate-800';
+                        barColor += ' ring-2 ring-offset-2 ring-slate-200 dark:ring-slate-700 dark:ring-offset-slate-800';
                     }
 
                     return (

@@ -10,7 +10,7 @@ from .serializers import ProfileSerializer, FoodLogSerializer, WaterLogSerialize
 from django.conf import settings
 from django.db.models import Sum, StdDev
 from datetime import date, timedelta
-from google import genai
+import google.generativeai as genai
 
 from rest_framework import permissions
 

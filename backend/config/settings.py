@@ -40,11 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.apps.ApiConfig',
     # Third party
     'rest_framework',
     'corsheaders',
     # Local
-    'api',
     'rest_framework.authtoken',
 ]
 
