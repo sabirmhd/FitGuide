@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Monthly Report</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 1cm;
+        }
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #334155;
+            font-size: 12px;
+        }
+
+        h1 {
+            color: #0d9488;
+            font-size: 24px;
+            text-transform: uppercase;
+            text-align: center;
+            border-bottom: 2px solid #0d9488;
+            padding-bottom: 10px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* Layout Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            vertical-align: top;
+            padding: 5px;
+        }
+
+        /* User Summary */
+        .user-summary-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #475569;
+        }
+
+        /* Metrics */
+        .metric-cell {
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            background-color: #ffffff;
+            width: 25%;
+        }
+
+        .metric-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+
+        .metric-val {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0f172a;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .text-success {
+            color: #10b981;
+        }
+
+        .text-warning {
+            color: #f59e0b;
+        }
+
+        /* Charts */
+        .chart-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .chart-img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Adherence */
+        .adherence-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .adherence-cell {
+            text-align: center;
+            width: 33%;
+        }
+
+        /* Insights */
+        .insights-box {
+            margin-top: 20px;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 10px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 9px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Monthly Health Report</h1>
+    <div class="subtitle">{{ month_name }}</div>
+
+    <!-- User Summary Table -->
+    <table class="user-summary-box">
+        <tr>
+            <td width="50%">
+                <span class="label">Name:</span> {{ user_profile.name }}<br>
+                <span class="label">Age/Gender:</span> {{ user_profile.age }} / {{ user_profile.gender }}
+            </td>
+            <td width="50%">
+                <span class="label">Goal:</span> {{ user_profile.goal }}<br><span class="label">Height/Weight:</span>
+                {{ user_profile.height }}cm / {{user_profile.current_weight}}kg
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <!-- Metrics Table -->
+    <table>
+        <tr>
+            <td class="metric-cell">
+                <div class="metric-title">Weight Trend (Start → End)</div>
+                <div class="metric-val">{{ user_profile.start_weight }} → {{ user_profile.end_weight }}</div>
+            </td>
+            <td class="metric-cell">
+                <div class="metric-title">Net Change</div>
+                <div class="metric-val {% if weight_change <= 0 %}text-success{% else %}text-warning{% endif %}">
+                    {{ weight_change }} kg
+                </div>
+            </td>
+            <td class="metric-cell">
+                <div class="metric-title">BMI</div>
+                <div class="metric-val">{{ user_profile.bmi }} <br><span
+                        style="font-size: 10px; font-weight: normal; color: #64748b;">
+                        {{ user_profile.bmi_category}}</span></div>
+            </td>
+            <td class="metric-cell">
+                <div class="metric-title">Avg Calories</div>
+                <div class="metric-val">{{ avg_daily_calories }}</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Charts -->
+    <div class="chart-section">
+        <div style="font-weight: bold; color: #64748b; font-size: 12px; margin-bottom: 5px; text-transform: uppercase;">
+            Weight Progress</div>
+        <img src="data:image/png;base64,{{ weight_chart }}" class="chart-img" />
+    </div>
+
+    <div class="chart-section">
+        <div style="font-weight: bold; color: #64748b; font-size: 12px; margin-bottom: 5px; text-transform: uppercase;">
+            Daily Calories vs Target</div>
+        <img src="data:image/png;base64,{{ calorie_chart }}" class="chart-img" />
+    </div>
+
+    <!-- Adherence -->
+    <div class="adherence-box">
+        <table>
+            <tr>
+                <td class="adherence-cell">
+                    <div style="font-size: 16px; font-weight: bold; color: #14532d;">
+                        {{ adherence.logged_days }} / {{ total_days_in_month }}</div>
+                    <div style="font-size: 10px; color: #166534;">Days Logged</div>
+                </td>
+                <td class="adherence-cell">
+                    <div style="font-size: 16px; font-weight: bold; color: #14532d;">{{ adherence.met_target_days }}
+                    </div>
+                    <div style="font-size: 10px; color: #166534;">Target Achieved</div>
+                </td>
+                <td class="adherence-cell">
+                    <div style="font-size: 16px; font-weight: bold; color: #14532d;">{{ adherence.streak|default:"0" }}
+                        Days</div>
+                    <div style="font-size: 10px; color: #166534;">Longest Streak</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Insights -->
+    <div class="insights-box">
+        <strong>Insights:</strong><br>
+        {% for insight in insights %}
+        &bull; {{ insight }}<br>
+        {% endfor %}
+    </div>
+
+    <!-- Footer -->
+    <div id="footer_content" class="footer">
+        Disclaimer: This report is not medical advice. Consult a professional for health decisions.<br>
+        Generated on: {% now "Y-m-d H:i" %}
+    </div>
+
+</body>
+
+</html>
