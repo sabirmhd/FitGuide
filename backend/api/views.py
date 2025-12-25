@@ -7,10 +7,10 @@ from rest_framework import status, generics
 from django.shortcuts import get_object_or_404
 from .models import Profile, FoodLog, WaterLog, WeightLog, ExerciseLog, SleepLog
 from .serializers import ProfileSerializer, FoodLogSerializer, WaterLogSerializer, WeightLogSerializer, ExerciseLogSerializer, SleepLogSerializer
-import google.generativeai as genai
 from django.conf import settings
 from django.db.models import Sum, StdDev
 from datetime import date, timedelta
+from google import genai
 
 from rest_framework import permissions
 
