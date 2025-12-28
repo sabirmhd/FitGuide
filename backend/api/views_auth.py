@@ -18,25 +18,35 @@ class RegisterView(APIView):
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
-        confirm_password = request.data.get('confirm_password')
 
         if not username or not password:
-            return Response({'error': 'Please provide both username and password'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if password != confirm_password:
-             return Response({'error': 'Passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'error': 'Username and password are required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         if User.objects.filter(username=username).exists():
-            return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'error': 'Username already exists'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+
         token, _ = Token.objects.get_or_create(user=user)
-        
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'username': user.username
-        }, status=status.HTTP_201_CREATED)
+
+        return Response(
+            {
+                'token': token.key,
+                'user_id': user.id,
+                'username': user.username
+            },
+            status=status.HTTP_201_CREATED
+        )
 
 class CustomLoginView(ObtainAuthToken):
     permission_classes = [AllowAny]
