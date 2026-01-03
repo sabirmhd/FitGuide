@@ -142,13 +142,28 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # --------------------------------------------------
 # CORS
 # --------------------------------------------------
+# --------------------------------------------------
+# CORS
+# --------------------------------------------------
+# Allow localhost for development
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5175",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True  # OK for development
+# Add the production frontend URL if it exists in env
+CSRF_TRUSTED_ORIGINS = []
+RENDER_EXTERNAL_URL = os.getenv("RENDER_EXTERNAL_URL") # Auto-set by Render
+if RENDER_EXTERNAL_URL:
+     CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_EXTERNAL_URL}")
+
+FRONTEND_URL = os.getenv("FRONTEND_URL")
+if FRONTEND_URL:
+    CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
+    CSRF_TRUSTED_ORIGINS.append(FRONTEND_URL)
+
+CORS_ALLOW_ALL_ORIGINS = False # Safer for production
 
 # --------------------------------------------------
 # Email (development)
