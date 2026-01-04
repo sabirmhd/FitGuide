@@ -254,7 +254,7 @@ const ProfilePage = () => {
                                     try {
                                         await updateProfile({ reminders_enabled: enabled });
                                     } catch (err) {
-                                        console.error("Failed to update reminder setting");
+                                        console.error("Failed to update reminder setting", err);
                                         setProfile(profile); // Revert
                                     }
                                 }}
