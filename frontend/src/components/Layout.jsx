@@ -16,12 +16,15 @@ const Layout = ({ children }) => {
     });
 
     useEffect(() => {
+        console.log("Dark mode state:", isDarkMode);
         if (isDarkMode) {
             document.documentElement.classList.add('dark');
             localStorage.setItem('theme', 'dark');
+            console.log("Added dark class", document.documentElement.classList);
         } else {
             document.documentElement.classList.remove('dark');
             localStorage.setItem('theme', 'light');
+            console.log("Removed dark class", document.documentElement.classList);
         }
     }, [isDarkMode]);
 

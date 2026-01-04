@@ -19,6 +19,7 @@ const LandingPage = () => {
     }, [navigate]);
 
     useEffect(() => {
+        console.log("Landing dark mode:", isDarkMode);
         if (isDarkMode) {
             document.documentElement.classList.add('dark');
             localStorage.setItem('theme', 'dark');
