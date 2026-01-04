@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Activity, Utensils, Brain, Zap, ChevronRight, CheckCircle2, Sun, Moon } from 'lucide-react';
+import { ArrowRight, Activity, Utensils, Brain, Zap, ChevronRight, CheckCircle2, Sun, Moon, Menu, X } from 'lucide-react';
 
 const LandingPage = () => {
     const navigate = useNavigate();
@@ -11,6 +11,8 @@ const LandingPage = () => {
         return false;
     });
 
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -48,25 +50,66 @@ const LandingPage = () => {
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <button
-                onClick={toggleTheme}
-                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-600 dark:text-slate-400"
-                title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-              >
-                {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </button>
-              <Link to="/login" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium transition-colors">
-                Log in
-              </Link>
-              <Link
-                to="/register"
-                className="bg-slate-900 dark:bg-teal-600 text-white px-5 py-2 rounded-full font-medium hover:bg-slate-800 dark:hover:bg-teal-700 transition-all hover:shadow-lg active:scale-95"
-              >
-                Get Started
-              </Link>
+              {/* Desktop Nav */}
+              <div className="hidden md:flex items-center gap-4">
+                <button
+                    onClick={toggleTheme}
+                    className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-600 dark:text-slate-400"
+                    title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                >
+                    {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+                <Link to="/login" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium transition-colors">
+                    Log in
+                </Link>
+                <Link
+                    to="/register"
+                    className="bg-slate-900 dark:bg-teal-600 text-white px-5 py-2 rounded-full font-medium hover:bg-slate-800 dark:hover:bg-teal-700 transition-all hover:shadow-lg active:scale-95"
+                >
+                    Get Started
+                </Link>
+              </div>
+
+               {/* Mobile Nav Toggle */}
+               <div className="flex items-center gap-2 md:hidden">
+                 <button
+                    onClick={toggleTheme}
+                    className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-600 dark:text-slate-400"
+                 >
+                    {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                 </button>
+                 <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                 >
+                    {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                 </button>
+               </div>
             </div>
           </div>
         </div>
+
+        {/* Mobile Menu Drawer */}
+        {isMenuOpen && (
+            <div className="md:hidden absolute top-16 left-0 w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-xl animate-in slide-in-from-top-5 duration-200">
+                <div className="p-4 flex flex-col gap-4">
+                     <Link 
+                        to="/login" 
+                        className="flex items-center justify-center w-full py-3 text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                     >
+                        Log in
+                    </Link>
+                    <Link
+                        to="/register"
+                        className="flex items-center justify-center w-full py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-bold rounded-lg shadow-md active:scale-95 transition-transform"
+                        onClick={() => setIsMenuOpen(false)}
+                    >
+                        Get Started
+                    </Link>
+                </div>
+            </div>
+        )}
       </nav>
 
       {/* Hero Section */}
