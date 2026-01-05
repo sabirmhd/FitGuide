@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Activity, Utensils, Brain, Zap, ChevronRight, CheckCircle2, Sun, Moon, Menu, X } from 'lucide-react';
+import { ArrowRight, Activity, Utensils, Brain, Zap, ChevronRight, CheckCircle2, Menu, X } from 'lucide-react';
 
 const LandingPage = () => {
     const navigate = useNavigate();
-    const [isDarkMode, setIsDarkMode] = useState(() => {
-        if (localStorage.getItem('theme') === 'dark') {
-            return true;
-        }
-        return false;
-    });
-
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     
     useEffect(() => {
@@ -20,20 +13,8 @@ const LandingPage = () => {
         }
     }, [navigate]);
 
-    useEffect(() => {
-        console.log("Landing dark mode:", isDarkMode);
-        if (isDarkMode) {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        }
-    }, [isDarkMode]);
+    // Theme logic removed - enforcing dark mode globally
 
-    const toggleTheme = () => {
-        setIsDarkMode(!isDarkMode);
-    };
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50 font-sans selection:bg-teal-100 selection:text-teal-900 overflow-x-hidden transition-colors duration-300">
@@ -52,13 +33,7 @@ const LandingPage = () => {
             <div className="flex items-center gap-4">
               {/* Desktop Nav */}
               <div className="hidden md:flex items-center gap-4">
-                <button
-                    onClick={toggleTheme}
-                    className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-600 dark:text-slate-400"
-                    title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-                >
-                    {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                </button>
+
                 <Link to="/login" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium transition-colors">
                     Log in
                 </Link>
@@ -72,12 +47,7 @@ const LandingPage = () => {
 
                {/* Mobile Nav Toggle */}
                <div className="flex items-center gap-2 md:hidden">
-                 <button
-                    onClick={toggleTheme}
-                    className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-600 dark:text-slate-400"
-                 >
-                    {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                 </button>
+
                  <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                     className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"

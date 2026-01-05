@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, User, LogOut, Droplets, Info, Scale, Dumbbell, Sun, Moon, FileText, BedDouble, Menu, X } from 'lucide-react';
+import { Activity, User, LogOut, Droplets, Info, Scale, Dumbbell, FileText, BedDouble, Menu, X } from 'lucide-react';
 import { logout } from '../api';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -8,29 +8,8 @@ const Layout = ({ children }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
 
-    const [isDarkMode, setIsDarkMode] = useState(() => {
-        if (localStorage.getItem('theme') === 'dark') {
-            return true;
-        }
-        return false; // Default to light
-    });
+    // Theme logic removed - enforcing dark mode globally
 
-    useEffect(() => {
-        console.log("Dark mode state:", isDarkMode);
-        if (isDarkMode) {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-            console.log("Added dark class", document.documentElement.classList);
-        } else {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-            console.log("Removed dark class", document.documentElement.classList);
-        }
-    }, [isDarkMode]);
-
-    const toggleTheme = () => {
-        setIsDarkMode(!isDarkMode);
-    };
 
     const handleLogout = async () => {
         try {
@@ -93,14 +72,8 @@ const Layout = ({ children }) => {
 
     const NavItems = ({ mobile = false }) => (
         <>
-            <button
-                onClick={toggleTheme}
-                className={`p-2 hover:bg-teal-700 dark:hover:bg-teal-800 rounded-lg transition text-teal-100 hover:text-white ${mobile ? 'w-full flex items-center gap-3' : ''}`}
-                title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            >
-                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-                {mobile && <span>{isDarkMode ? "Light Mode" : "Dark Mode"}</span>}
-            </button>
+            {/* Theme toggle removed */}
+
 
             {!mobile && <div className="h-6 w-px bg-teal-500/50 hidden md:block"></div>}
 
