@@ -1,12 +1,5 @@
 from django.contrib import admin
-from .models import (
-    Profile,
-    FoodLog,
-    WaterLog,
-    WeightLog,
-    ExerciseLog,
-    SleepLog
-)
+from .models import Profile, FoodLog, WaterLog, WeightLog, ExerciseLog, SleepLog
 
 # -------------------------
 # Profile
